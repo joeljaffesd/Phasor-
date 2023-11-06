@@ -93,15 +93,16 @@ void PhasorAudioProcessor::changeProgramName (int index, const juce::String& new
 //==============================================================================
 void PhasorAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    //initialzie spec
     juce::dsp::ProcessSpec spec;
     spec.maximumBlockSize = samplesPerBlock;
     spec.sampleRate = sampleRate;
     spec.numChannels = getTotalNumOutputChannels();
     
-    phasor.prepare (spec);
-    gain.prepare (spec);
-    phasor.setFrequency (220.0f);
-    gain.setGainLinear(0.01f);
+    phasor.prepare (spec); //pass spec tp phasor
+    gain.prepare (spec); //pass spec to gain
+    phasor.setFrequency (1.0f); //set frequency
+    gain.setGainLinear(0.01f); //set gain for audio output
 }
 
 void PhasorAudioProcessor::releaseResources()

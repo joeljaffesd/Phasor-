@@ -58,7 +58,7 @@ public:
     
 private:
     
-    juce::dsp::Oscillator<float> phasor { [](float x) { return std::sin (x); }};
+    juce::dsp::Oscillator<float> phasor { [](float x) { return ((x / juce::MathConstants<float>::pi) + 1.0f) / 2.0f; }};
     juce::dsp::Gain<float> gain;
     
     //==============================================================================
