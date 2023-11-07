@@ -62,7 +62,7 @@ private:
     juce::dsp::Oscillator<float> phasor { [](float x) { return ((x / juce::MathConstants<float>::pi) + 1.0f) / 2.0f; }};
     
     //initialzie phasor gain
-    juce::dsp::Gain<float> gain;
+    //juce::dsp::Gain<float> gain;
     
     //initialize phase variable for sample-rate control
     float phase { 0.0f };

@@ -101,14 +101,14 @@ void PhasorAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     spec.numChannels = getTotalNumOutputChannels();
     
     phasor.prepare (spec); //pass spec to phasor
-    gain.prepare (spec); //pass spec to gain
+    //gain.prepare (spec); //pass spec to gain
     
 
     //float phasorFreq = 2.0f;
     
     //phasor.setFrequency ( phasorFreq / spec.sampleRate );
     phasor.setFrequency(1.0f);
-    gain.setGainLinear(1.0f); //set gain for audio output
+    //gain.setGainLinear(1.0f); //set gain for audio output
 }
 
 void PhasorAudioProcessor::releaseResources()
