@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+//#include <juce_core/juce_core.h> //<- include for DBG function
 
 //==============================================================================
 PhasorAudioProcessor::PhasorAudioProcessor()
@@ -99,9 +100,14 @@ void PhasorAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     spec.sampleRate = sampleRate;
     spec.numChannels = getTotalNumOutputChannels();
     
-    phasor.prepare (spec); //pass spec tp phasor
+    phasor.prepare (spec); //pass spec to phasor
     gain.prepare (spec); //pass spec to gain
-    phasor.setFrequency (2.0f); //set frequency
+    
+
+    //float phasorFreq = 2.0f;
+    
+    //phasor.setFrequency ( phasorFreq / spec.sampleRate );
+    phasor.setFrequency(1.0f);
     gain.setGainLinear(1.0f); //set gain for audio output
 }
 
@@ -143,9 +149,30 @@ void PhasorAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
+    /* //write phasor to main buffer
+    //pass processing contexts to phasor and gain
     juce::dsp::AudioBlock<float> audioBlock { buffer };
     phasor.process (juce::dsp::ProcessContextReplacing<float> (audioBlock));
     gain.process (juce::dsp::ProcessContextReplacing<float> (audioBlock));
+    */
+    
+    //capture phasor output and assign to phase variable
+    for (int sampleIndex = 0; sampleIndex < buffer.getNumSamples(); ++sampleIndex)
+    {
+        phase = phasor.processSample(0.0f);
+    }
+    
+    //print phase
+    static juce::Time lastDebugPrintTime = juce::Time::getCurrentTime();
+        juce::Time currentTime = juce::Time::getCurrentTime();
+        if (currentTime - lastDebugPrintTime >= juce::RelativeTime::milliseconds(100))
+        {
+            // Print debug message
+            DBG("Phase: " + juce::String(phase));
+            
+            // Update the last print time
+            lastDebugPrintTime = currentTime;
+        }
     
         for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());

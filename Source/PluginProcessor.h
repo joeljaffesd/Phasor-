@@ -58,8 +58,17 @@ public:
     
 private:
     
+    //initialize phasor
     juce::dsp::Oscillator<float> phasor { [](float x) { return ((x / juce::MathConstants<float>::pi) + 1.0f) / 2.0f; }};
+    
+    //initialzie phasor gain
     juce::dsp::Gain<float> gain;
+    
+    //initialize phase variable for sample-rate control
+    float phase { 0.0f };
+    
+    //initialzie blockSize
+    //float blockSize { 0.0f };
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PhasorAudioProcessor)
